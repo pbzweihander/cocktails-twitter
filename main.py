@@ -6,13 +6,14 @@ from cocktaildb import *
 class MentionReader(tweepy.StreamListener):
     def __init__(self, api):
         tweepy.StreamListener.__init__(self, api)
+        self.screen_name = self.api.me().screen_name
 
     def on_status(self, status):
         if status:
             mentions = status.entities[u'user_mentions']
             if mentions:
                 for mention in mentions:
-                    if mention[u'screen_name'] == u'pbzweihander':
+                    if mention[u'screen_name'] == self.screen_name:
                         self.handle_stream_mention(status)
                         break
 
@@ -62,7 +63,7 @@ class MentionReader(tweepy.StreamListener):
         print("post tweet : %s" % message)
         try:
             s = self.api.update_status(status=msg, in_reply_to_status_id=reply_id)
-        except Exception as e:  # twitter.TwitterError as e:
+        except Exception as e:
             print(e)
             return None
         return s
