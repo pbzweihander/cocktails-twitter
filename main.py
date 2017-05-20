@@ -36,10 +36,14 @@ class MentionReader(tweepy.StreamListener):
                             s = random_cocktails()
                             if s:
                                 self.post_long_tweet(s, mention.id)
+                            else:
+                                self.post_tweet("검색 결과가 없습니다", mention.id)
                         else:
                             s = find_cocktails(name)
                             if s:
                                 self.post_long_tweet(s, mention.id)
+                            else:
+                                self.post_tweet("검색 결과가 없습니다", mention.id)
                 elif u'i!' in mention.text:
                     name = mention.text.split(u'i!')[1].strip()
                     print("finding ingredient : %s" % name)
@@ -47,6 +51,8 @@ class MentionReader(tweepy.StreamListener):
                         s = find_ingredient(name)
                         if s:
                             self.post_long_tweet(s, mention.id)
+                        else:
+                            self.post_tweet("검색 결과가 없습니다", mention.id)
 
     def post_long_tweet(self, message, reply_id=None):
         if len(message) > 140:
