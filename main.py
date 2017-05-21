@@ -29,7 +29,7 @@ class MentionReader(tweepy.StreamListener):
             print("mention read : %s - %s" % (mention.id, mention.text))
             if 'RT' not in mention.text:
                 if u'c!' in mention.text:
-                    name = mention.text.split(u'c!')[1].strip()
+                    name = mention.text.split(u'c?')[1].strip()
                     print("finding cocktail : %s" % name)
                     if name:
                         if name == 'random':
@@ -45,7 +45,7 @@ class MentionReader(tweepy.StreamListener):
                             else:
                                 self.post_tweet("검색 결과가 없습니다", mention.id)
                 elif u'i!' in mention.text:
-                    name = mention.text.split(u'i!')[1].strip()
+                    name = mention.text.split(u'i?')[1].strip()
                     print("finding ingredient : %s" % name)
                     if name:
                         s = find_ingredient(name)
