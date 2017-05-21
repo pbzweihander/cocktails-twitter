@@ -38,16 +38,28 @@ class MentionReader(tweepy.StreamListener):
                             s = find_cocktails(name)
                         if not s:
                             s = "검색 결과가 없습니다"
+                elif u'cs?' in mention.text:
+                    name = mention.text.split(u'?')[1].strip()
+                    if name:
+                        s = find_cocktails(name, True)
+                        if not s:
+                            s = "검색 결과가 없습니다"
                 elif u'i?' in mention.text:
                     name = mention.text.split(u'?')[1].strip()
                     if name:
                         s = find_ingredient(name)
                         if not s:
                             s = "검색 결과가 없습니다"
+                elif u'is?' in mention.text:
+                    name = mention.text.split(u'?')[1].strip()
+                    if name:
+                        s = find_ingredient(name, True, False)
+                        if not s:
+                            s = "검색 결과가 없습니다"
                 elif u'id?' in mention.text:
                     name = mention.text.split(u'?')[1].strip()
                     if name:
-                        s = find_ingredient(name, True)
+                        s = find_ingredient(name, False, True)
                         if not s:
                             s = "검색 결과가 없습니다"
                 if s:
