@@ -28,31 +28,30 @@ class MentionReader(tweepy.StreamListener):
         if mention:
             print("mention read : %s - %s" % (mention.id, mention.text))
             if 'RT' not in mention.text:
-                if u'c!' in mention.text:
-                    name = mention.text.split(u'c?')[1].strip()
-                    print("finding cocktail : %s" % name)
+                s = ''
+                if u'c?' in mention.text:
+                    name = mention.text.split(u'?')[1].strip()
                     if name:
                         if name == 'random':
                             s = random_cocktails()
-                            if s:
-                                self.post_long_tweet(s, mention.id)
-                            else:
-                                self.post_tweet("검색 결과가 없습니다", mention.id)
                         else:
                             s = find_cocktails(name)
-                            if s:
-                                self.post_long_tweet(s, mention.id)
-                            else:
-                                self.post_tweet("검색 결과가 없습니다", mention.id)
-                elif u'i!' in mention.text:
-                    name = mention.text.split(u'i?')[1].strip()
-                    print("finding ingredient : %s" % name)
+                        if not s:
+                            s = "검색 결과가 없습니다"
+                elif u'i?' in mention.text:
+                    name = mention.text.split(u'?')[1].strip()
                     if name:
                         s = find_ingredient(name)
-                        if s:
-                            self.post_long_tweet(s, mention.id)
-                        else:
-                            self.post_tweet("검색 결과가 없습니다", mention.id)
+                        if not s:
+                            s = "검색 결과가 없습니다"
+                elif u'id?' in mention.text:
+                    name = mention.text.split(u'?')[1].strip()
+                    if name:
+                        s = find_ingredient(name, True)
+                        if not s:
+                            s = "검색 결과가 없습니다"
+                if s:
+                    self.post_long_tweet(s, mention.id)
 
     def post_long_tweet(self, message, reply_id=None):
         if len(message) > 140:
